@@ -2,13 +2,18 @@ extends Node2D
 
 @export var run_button : Button
 @export var add_button : Button
+@export var ground_node : Node2D
 @export var fluid_node : Node2D
 @export var fluid_debug_node : Control
+@export var ground_debug_node : Control
+@export var total_debug_node : Control
 @export var selection_sprite : Sprite2D
 @export var simulation_timer : Timer
 @export var iteration_label : Label
 
 var fluid_debug_labels : Array
+var ground_debug_labels : Array
+var total_debug_labels : Array
 
 var map : Array
 var width = 60
@@ -30,6 +35,7 @@ func _ready():
 	set_neighbors()
 	
 	var creeper_img = load("res://Art/creeper.png")
+	var ground_img = load("res://Art/landscape.png")
 	for y in height:
 		for x in width:
 			var sprite = Sprite2D.new()
@@ -38,26 +44,76 @@ func _ready():
 			sprite.position = Vector2i(x*tile + boundary, y*tile+boundary)
 			fluid_node.add_child(sprite)
 			map[y*width+x].fluid_sprite = sprite
-	
+			
+			sprite = Sprite2D.new()
+			sprite.texture = ground_img
+			sprite.hframes = 10
+			sprite.frame = 0
+			sprite.centered = false
+			sprite.position = Vector2i(x*tile + boundary, y*tile+boundary)
+			ground_node.add_child(sprite)
+			map[y*width+x].ground_sprite = sprite
+
+	create_map()
+
 	create_fluid_debug_labels()
-	
 	update_sprites()
 
-func create_fluid_debug_labels():
-	var label = Label.new()
-	label.text = "Fluid"
-	fluid_debug_node.add_child(label)
+func create_map():
+	map[10*width+10].ground_level = 2
+	map[10*width+11].ground_level = 2
+	map[10*width+12].ground_level = 2
+	map[10*width+13].ground_level = 2
+	map[10*width+14].ground_level = 2
 	
+	map[11*width+10].ground_level = 2
+	map[11*width+14].ground_level = 2
+	
+	map[12*width+10].ground_level = 2
+	map[12*width+14].ground_level = 2
+	
+	map[13*width+10].ground_level = 2
+	map[13*width+14].ground_level = 2
+	
+	map[14*width+10].ground_level = 2
+	map[14*width+11].ground_level = 2
+	map[14*width+12].ground_level = 2	
+	map[14*width+13].ground_level = 2
+	map[14*width+14].ground_level = 2
+
+func create_fluid_debug_labels():
 	fluid_debug_labels.resize(25)
 	for a in 5:
 		var hbox = HBoxContainer.new()
 		fluid_debug_node.add_child(hbox)
 		for b in 5:
-			label = Label.new()
+			var label = Label.new()
 			label.text = "0.0"
 			label.custom_minimum_size.x = 30
 			hbox.add_child(label)
 			fluid_debug_labels[a*5+b] = label
+	
+	ground_debug_labels.resize(25)
+	for a in 5:
+		var hbox = HBoxContainer.new()
+		ground_debug_node.add_child(hbox)
+		for b in 5:
+			var label = Label.new()
+			label.text = "0.0"
+			label.custom_minimum_size.x = 30
+			hbox.add_child(label)
+			ground_debug_labels[a*5+b] = label
+	
+	total_debug_labels.resize(25)
+	for a in 5:
+		var hbox = HBoxContainer.new()
+		total_debug_node.add_child(hbox)
+		for b in 5:
+			var label = Label.new()
+			label.text = "0.0"
+			label.custom_minimum_size.x = 30
+			hbox.add_child(label)
+			total_debug_labels[a*5+b] = label
 
 func set_neighbors():
 	# Center
@@ -102,7 +158,12 @@ func set_neighbors():
 
 func update_sprites():
 	for i in map.size():
-		map[i].fluid_sprite.modulate.a = map[i].fluid_level * 10
+		map[i].ground_sprite.frame = map[i].ground_level
+	
+	# Update fluid
+	for i in map.size():
+		map[i].fluid_sprite.modulate.a = map[i].fluid_level * 10.0
+		#map[i].fluid_sprite.modulate.a = snapped(map[i].fluid_level, 0.2) * 10.0
 	
 	# Debug
 	var x = selection % width
@@ -117,6 +178,25 @@ func update_sprites():
 				fluid_debug_labels[yy*5+xx].text = value
 			else:
 				fluid_debug_labels[yy*5+xx].text = "%.2f" % value
+	
+	for yy in range(5):
+		for xx in range(5):
+			var value = get_ground(xx+x-2, yy+y-2)
+			if (value is String):
+				ground_debug_labels[yy*5+xx].text = value
+			else:
+				ground_debug_labels[yy*5+xx].text = "%.2f" % value
+	
+	for yy in range(5):
+		for xx in range(5):
+			var value = get_total(xx+x-2, yy+y-2)
+			if (value is String):
+				total_debug_labels[yy*5+xx].text = value
+			else:
+				total_debug_labels[yy*5+xx].text = "%.2f" % value
+
+func step():
+	step_simulation_including_ground()
 
 func step_simulation():
 	iteration += 1
@@ -126,6 +206,26 @@ func step_simulation():
 		for n in cell.neighbors:
 			f += map[n].fluid_level
 		f -= cell.neighbors.size()*cell.fluid_level
+		cell.velocity += c*c*f*dt
+		cell.velocity *= velocity_scale
+		cell.buffer = cell.fluid_level + cell.velocity*dt
+		
+	for i in (width*height):
+		var cell = map[i]
+		cell.fluid_level = cell.buffer
+
+func step_simulation_including_ground():
+	iteration += 1
+	for i in (width*height):
+		var cell = map[i]
+		var f = 0
+		var active_neighbors = 0
+		for n in cell.neighbors:
+			var neighbor = map[n]
+			if (neighbor.has_fluid() and neighbor.level() > cell.level()):
+				f += map[n].fluid_level
+				active_neighbors += 1
+		f -= active_neighbors*cell.fluid_level
 		cell.velocity += c*c*f*dt
 		cell.velocity *= velocity_scale
 		cell.buffer = cell.fluid_level + cell.velocity*dt
@@ -145,21 +245,39 @@ func get_fluid(x : int, y : int):
 		return "-"
 	return get_cell(x,y).fluid_level
 
+func get_ground(x : int, y : int):
+	if (x < 0 or x >= width or y < 0 or y >= height):
+		return "-"
+	return get_cell(x,y).ground_level
+
+func get_total(x : int, y : int):
+	if (x < 0 or x >= width or y < 0 or y >= height):
+		return "-"
+	return get_cell(x,y).ground_level + get_cell(x,y).fluid_level
+
 func _unhandled_input(event):
 	if (event.is_action_pressed("ui_cancel")):
 		get_tree().quit()
 	elif event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
-		var x = floori(event.position.x - boundary) / tile
-		var y = floori(event.position.y - boundary) / tile
-		selection = (y*width)+x
-		if (add_button.button_pressed):
-			map[selection].fluid_level = 10
-		update_sprites()
+		if (event.position.x > boundary and event.position.x <= (width*tile+boundary) and event.position.y > boundary and event.position.y <= (height*tile+boundary)):
+			var x = floori(event.position.x - boundary) / tile
+			var y = floori(event.position.y - boundary) / tile
+			selection = (y*width)+x
+			if (add_button.button_pressed):
+				map[selection].fluid_level = 10
+			update_sprites()
+	elif event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
+		if (event.position.x > boundary and event.position.x <= (width*tile+boundary) and event.position.y > boundary and event.position.y <= (height*tile+boundary)):
+			var x = floori(event.position.x - boundary) / tile
+			var y = floori(event.position.y - boundary) / tile
+			get_cell(x,y).ground_level += 1
+			update_sprites()
 
 func _on_clear_button_pressed():
 	iteration = 0
 	for i in map.size():
 		map[i].fluid_level = 0
+		map[i].velocity = 0
 	update_sprites()
 
 func _on_quit_button_pressed():
@@ -172,9 +290,9 @@ func _on_check_button_pressed():
 		simulation_timer.stop()
 
 func _on_step_button_pressed():
-	step_simulation()
+	step()
 	update_sprites()
 
 func _on_timer_timeout():
-	step_simulation()
+	step()
 	update_sprites()
