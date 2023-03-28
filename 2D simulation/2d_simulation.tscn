@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bl6olowkpd8x2"]
+
+[ext_resource type="Script" path="res://2D simulation/2d_simulation.gd" id="1_vbwtq"]
+[ext_resource type="Texture2D" uid="uid://bbbi2yhgvmu6y" path="res://Art/landscape.png" id="3_jesxw"]
+
+[node name="2D Simulation" type="Node2D" node_paths=PackedStringArray("timer")]
+script = ExtResource("1_vbwtq")
+timer = NodePath("Timer")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(9, 1)
+texture = ExtResource("3_jesxw")
+centered = false
+hframes = 10
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
