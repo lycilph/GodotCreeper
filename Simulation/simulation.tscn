@@ -51,6 +51,7 @@ layout_mode = 2
 [node name="AddButton" type="CheckButton" parent="CanvasLayer/MarginContainer/VBoxContainer"]
 layout_direction = 3
 layout_mode = 2
+button_pressed = true
 text = "Add"
 alignment = 2
 
@@ -99,13 +100,9 @@ theme_override_constants/margin_bottom = 10
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer2/VBoxContainer"]
-layout_mode = 2
-
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.1
 
-[connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/ClearButton" to="." method="_on_clear_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/VBoxContainer/StepButton" to="." method="_on_step_button_pressed"]

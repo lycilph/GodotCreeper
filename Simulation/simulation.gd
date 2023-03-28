@@ -8,7 +8,7 @@ extends Node2D
 @export var simulation_timer : Timer
 @export var iteration_label : Label
 
-var fluid_debug_dict : Dictionary
+var fluid_debug_labels : Array
 
 var map : Array
 var width = 60
@@ -16,7 +16,6 @@ var height = 40
 var boundary = 10
 var tile = 16
 var selection = 0
-var adding = false
 var iteration = 0
 
 var c = 0.3
@@ -40,25 +39,25 @@ func _ready():
 			fluid_node.add_child(sprite)
 			map[y*width+x].fluid_sprite = sprite
 	
-	update_sprites()
+	create_fluid_debug_labels()
 	
-	create_fluid_debug_dictionary()
+	update_sprites()
 
-func create_fluid_debug_dictionary():
+func create_fluid_debug_labels():
 	var label = Label.new()
 	label.text = "Fluid"
 	fluid_debug_node.add_child(label)
 	
-	for y in range(-2,3):
+	fluid_debug_labels.resize(25)
+	for a in 5:
 		var hbox = HBoxContainer.new()
 		fluid_debug_node.add_child(hbox)
-		for x in range(-2,3):
-			var pos = Vector2i(x,y)
+		for b in 5:
 			label = Label.new()
 			label.text = "0.0"
 			label.custom_minimum_size.x = 30
 			hbox.add_child(label)
-			fluid_debug_dict[pos] = label
+			fluid_debug_labels[a*5+b] = label
 
 func set_neighbors():
 	# Center
@@ -111,11 +110,13 @@ func update_sprites():
 	selection_sprite.position = Vector2i(x*tile + boundary, y*tile+boundary)
 	iteration_label.text = "%04d" % iteration
 	
-	for i in range(-2,3):
-		for j in range(-2,3):
-			var pos = Vector2i(i,j)
-			fluid_debug_dict[pos].text = "f"
-			
+	for yy in range(5):
+		for xx in range(5):
+			var value = get_fluid(xx+x-2, yy+y-2)
+			if (value is String):
+				fluid_debug_labels[yy*5+xx].text = value
+			else:
+				fluid_debug_labels[yy*5+xx].text = "%.2f" % value
 
 func step_simulation():
 	iteration += 1
@@ -139,6 +140,11 @@ func get_cell(x : int, y : int):
 func get_cell_index(x : int, y : int):
 	return y*width+x
 
+func get_fluid(x : int, y : int):
+	if (x < 0 or x >= width or y < 0 or y >= height):
+		return "-"
+	return get_cell(x,y).fluid_level
+
 func _unhandled_input(event):
 	if (event.is_action_pressed("ui_cancel")):
 		get_tree().quit()
@@ -146,13 +152,9 @@ func _unhandled_input(event):
 		var x = floori(event.position.x - boundary) / tile
 		var y = floori(event.position.y - boundary) / tile
 		selection = (y*width)+x
-		if (adding):
+		if (add_button.button_pressed):
 			map[selection].fluid_level = 10
 		update_sprites()
-
-func _on_add_button_pressed():
-	adding = add_button.button_pressed
-	update_sprites()
 
 func _on_clear_button_pressed():
 	iteration = 0
