@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgrinolw0a8m5"]
+
+[ext_resource type="Script" path="res://CellularAutomata/spawner.gd" id="1_5wpr2"]
+[ext_resource type="Texture2D" uid="uid://ce80513ychxik" path="res://Art/ca_sprite.png" id="1_15xrq"]
+
+[node name="Spawner" type="Node2D"]
+script = ExtResource("1_5wpr2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_15xrq")
+centered = false
+hframes = 5
+frame = 4
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

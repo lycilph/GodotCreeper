@@ -1,10 +1,12 @@
 class_name Grid
 
+
 var cells : Array
 var width
 var height
 var tile
 var boundary
+
 
 func _init(w : int, h : int, t : int, b : int):
 	width = w
@@ -15,19 +17,21 @@ func _init(w : int, h : int, t : int, b : int):
 	create_cells()
 	set_neighbors()
 
+
 func create_cells():
 	var img = load("res://Art/ca_sprite.png")
-	cells.resize(width*height)
+	cells.resize(size())
 	for y in height:
 		for x in width:
 			var sprite = Sprite2D.new()
 			sprite.texture = img
-			sprite.hframes = 4
+			sprite.hframes = 5
 			sprite.frame = 3
 			sprite.centered = false
 			sprite.position = Vector2i(x*tile+boundary,y*tile+boundary)
 			var cell = Cell.new(sprite)
 			cells[y*width+x] = cell
+
 
 func set_neighbors():
 	# Center
@@ -70,17 +74,44 @@ func set_neighbors():
 	get_cell(width-1,height-1).up = get_cell(width-1,height-2)
 	get_cell(width-1,height-1).left = get_cell(width-2,height-2)
 
+
 func add_sprites(node : Node):
-	for i in cells.size():
-		node.add_child(cells[i].sprite)
+	for c in cells:
+		node.add_child(c.sprite)
+
 
 func update():
 	for c in cells:
 		c.update()
 
-func set_cell(x : int, y : int, frame : int):
-	get_cell(x,y).sprite.frame = frame
-	get_cell(x,y).liquid = 1.0
+
+func clear():
+	for c in cells:
+		c.clear()
+		c.update()
+
+
+func size():
+	return width*height
+
+
+func set_cell_liquid(x : int, y : int, l : float):
+	var cell = get_cell(x,y)
+	cell.liquid = l
+	cell.update()
+
+
+func set_cell_type(x : int, y : int, t : Cell.CELL_TYPE):
+	var cell = get_cell(x,y)
+	cell.type = t
+	cell.update()
+
+
+func clear_cell(x : int, y : int):
+	var cell = get_cell(x,y)
+	cell.clear()
+	cell.update()
+
 
 func get_cell(x : int, y : int):
 	return cells[y*width+x]
