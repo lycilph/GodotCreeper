@@ -27,7 +27,6 @@ func step():
 	#var starting_value
 	var remaining_value
 	var flow
-	var temp
 	var cell
 	
 	for y in range(grid.height-1,-1,-1):
@@ -49,13 +48,10 @@ func step():
 			# Flow down
 			if (cell.down != null and cell.down.type == Cell.CELL_TYPE.BLANK):
 				flow = calculate_vertical_flow(cell.liquid, cell.down.liquid) - cell.down.liquid
-				if (flow > MIN_FLOW):
+				if (cell.down.liquid > 0.0 and flow > MIN_FLOW):
 					flow *= FLOW_SPEED
 				
-				flow = maxf(flow,0)
-				temp = minf(MAX_FLOW,cell.liquid)
-				if (flow > temp):
-					flow = temp
+				flow = clampf(flow, 0, minf(MAX_FLOW, cell.liquid))
 				
 				if (flow > 0):
 					remaining_value -= flow
@@ -72,10 +68,7 @@ func step():
 				if (flow > MIN_FLOW):
 					flow *= FLOW_SPEED
 				
-				flow = maxf(flow,0)
-				temp = minf(MAX_FLOW,cell.liquid)
-				if (flow > temp):
-					flow = temp
+				flow = clampf(flow, 0, minf(MAX_FLOW, cell.liquid))
 				
 				if (flow > 0):
 					remaining_value -= flow
@@ -92,10 +85,7 @@ func step():
 				if (flow > MIN_FLOW):
 					flow *= FLOW_SPEED
 				
-				flow = maxf(flow,0)
-				temp = minf(MAX_FLOW,cell.liquid)
-				if (flow > temp):
-					flow = temp
+				flow = clampf(flow, 0, minf(MAX_FLOW, cell.liquid))
 				
 				if (flow > 0):
 					remaining_value -= flow
@@ -112,10 +102,7 @@ func step():
 				if (flow > MIN_FLOW):
 					flow *= FLOW_SPEED
 				
-				flow = maxf(flow,0)
-				temp = minf(MAX_FLOW,cell.liquid)
-				if (flow > temp):
-					flow = temp
+				flow = clampf(flow, 0, minf(MAX_FLOW, cell.liquid))
 				
 				if (flow > 0):
 					remaining_value -= flow

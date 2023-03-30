@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cl61lmw6fnuho" path="res://Art/selection.png" id="2_owdxw"]
 [ext_resource type="Texture2D" uid="uid://ce80513ychxik" path="res://Art/ca_sprite.png" id="3_fi05n"]
 
-[node name="CellularAutomataMain" type="Node2D" node_paths=PackedStringArray("node", "spawner_node", "selection_sprite", "block_sprite", "run_button", "liquid_label")]
+[node name="CellularAutomataMain" type="Node2D" node_paths=PackedStringArray("node", "spawner_node", "selection_sprite", "block_sprite", "run_button", "liquid_label", "fps_label")]
 script = ExtResource("1_y4y4n")
 node = NodePath("Node2D")
 spawner_node = NodePath("SpawnerNode")
@@ -12,6 +12,7 @@ selection_sprite = NodePath("SelectionSprite")
 block_sprite = NodePath("SelectionBlock/BlockSprite")
 run_button = NodePath("CanvasLayer/MarginContainer/VBoxContainer/RunButton")
 liquid_label = NodePath("CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer/LiquidLabel")
+fps_label = NodePath("CanvasLayer/MarginContainer2/HBoxContainer/FPSLabel")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_left = 8.0
@@ -81,6 +82,31 @@ layout_mode = 2
 text = "Liquid"
 
 [node name="LiquidLabel" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "0.0"
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+text = "FPS"
+
+[node name="FPSLabel" type="Label" parent="CanvasLayer/MarginContainer2/HBoxContainer"]
 layout_mode = 2
 text = "0.0"
 

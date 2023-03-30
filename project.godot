@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Godot Creeper"
-run/main_scene="res://CellularAutomata/cellular_automata_main.tscn"
+run/main_scene="res://Landscape/create_landscape.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Global="*res://Src/global.gd"
 
 [debug]
 
@@ -22,7 +26,7 @@ gdscript/warnings/integer_division=0
 [display]
 
 window/size/viewport_width=1180
-window/size/viewport_height=860
+window/size/viewport_height=820
 window/size/resizable=false
 
 [input]

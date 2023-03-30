@@ -6,6 +6,7 @@ extends Node2D
 @export var block_sprite : Sprite2D
 @export var run_button : Button
 @export var liquid_label : Label
+@export var fps_label : Label
 
 var automata : CellularAutomata
 var grid : Grid
@@ -21,7 +22,7 @@ func _ready():
 	selection_sprite.position = Vector2i(grid.boundary,grid.boundary)
 
 
-func _process(_delta):
+func _physics_process(delta):
 	if (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)):
 		var pos = get_global_mouse_position()
 		var x = floori(pos.x - grid.boundary) / grid.tile
@@ -47,6 +48,7 @@ func _process(_delta):
 		automata.step()
 	
 	liquid_label.text = "%.2f" % grid.get_cell(selection_pos.x, selection_pos.y).liquid
+	fps_label.text = "%.2f" % (1/delta)
 	
 	if (running):
 		automata.step()

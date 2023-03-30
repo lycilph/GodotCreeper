@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://wr2jxnk2ookx"]
+
+[ext_resource type="Script" path="res://Landscape/create_landscape.gd" id="1_2y25k"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_khagg"]
+noise_type = 3
+frequency = 0.068
+fractal_gain = 0.4
+fractal_weighted_strength = 0.76
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_umev7"]
+width = 60
+height = 50
+noise = SubResource("FastNoiseLite_khagg")
+
+[node name="CreateLandscape" type="Control" node_paths=PackedStringArray("rect")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_2y25k")
+rect = NodePath("TextureRect")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 27.0
+offset_right = 756.0
+offset_bottom = 522.0
+texture = SubResource("NoiseTexture2D_umev7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 33.0
+offset_right = 888.0
+offset_bottom = 105.0
+theme_override_constants/separation = 10
+
+[node name="GenerateButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Generate"
+
+[node name="SaveButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Save"
+
+[connection signal="pressed" from="VBoxContainer/GenerateButton" to="." method="_on_generate_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
