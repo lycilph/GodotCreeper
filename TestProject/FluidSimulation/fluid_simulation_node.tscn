@@ -1,12 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://k81h8fq3t1tj"]
+[gd_scene load_steps=6 format=3 uid="uid://k81h8fq3t1tj"]
 
+[ext_resource type="Script" path="res://FluidSimulation/cell_renderer.gd" id="1_qw3td"]
 [ext_resource type="Script" path="res://FluidSimulation/fluid_simulation_node.gd" id="1_yf4e0"]
+[ext_resource type="Texture2D" uid="uid://baonrnhtse6lc" path="res://Assets/tile.png" id="3_jyi2p"]
+[ext_resource type="Texture2D" uid="uid://dq2c35qcpl105" path="res://Assets/arrows.png" id="4_y7dw1"]
+[ext_resource type="Texture2D" uid="uid://s8a2nrbf8ih1" path="res://Assets/settled.png" id="5_x3k3h"]
 
-[node name="FluidSimulationNode" type="Node2D"]
+[node name="FluidSimulationNode" type="Node2D" node_paths=PackedStringArray("renderer", "selection")]
 script = ExtResource("1_yf4e0")
+renderer = NodePath("CellRenderer")
+selection = NodePath("Selection")
 
 [node name="Background" type="ColorRect" parent="."]
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 810.0
 offset_bottom = 810.0
+
+[node name="CellRenderer" type="Node2D" parent="."]
+position = Vector2(10, 10)
+script = ExtResource("1_qw3td")
+tile = ExtResource("3_jyi2p")
+arrows = ExtResource("4_y7dw1")
+settled = ExtResource("5_x3k3h")
+
+[node name="Selection" type="Sprite2D" parent="."]
+modulate = Color(0, 0.541176, 0.054902, 1)
+texture = ExtResource("3_jyi2p")
+centered = false

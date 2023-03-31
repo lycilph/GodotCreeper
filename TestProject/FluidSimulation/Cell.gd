@@ -1,12 +1,12 @@
 class_name Cell
 
-enum {BLANK, SOLID}
+enum TYPE {BLANK, SOLID}
 enum {UP, RIGHT, DOWN, LEFT}
 
 # Data per cell
 var fluid : float
 var buffer : float
-var type = BLANK
+var type : TYPE = TYPE.BLANK
 
 # Other data
 var settled : bool = false
