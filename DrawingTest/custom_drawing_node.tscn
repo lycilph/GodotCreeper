@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsblru5wec4bk"]
+
+[ext_resource type="Script" path="res://CustomDrawingNode.gd" id="1_x2xn4"]
+[ext_resource type="Script" path="res://DrawingTest/DrawingNode.gd" id="2_jq01l"]
+
+[node name="CustomDrawingNode" type="Node2D" node_paths=PackedStringArray("camera")]
+script = ExtResource("1_x2xn4")
+camera = NodePath("Camera2D")
+
+[node name="DrawingNode" type="Node2D" parent="."]
+position = Vector2(10, 10)
+script = ExtResource("2_jq01l")
+
+[node name="Camera2D" type="Camera2D" parent="."]

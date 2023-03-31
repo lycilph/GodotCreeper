@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Godot Creeper"
-run/main_scene="res://Landscape/create_landscape.tscn"
+run/main_scene="res://DrawingTest/custom_drawing_node.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
 config/icon="res://icon.svg"
 
@@ -64,6 +64,16 @@ clear={
 add_remove_spawner={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":97,"echo":false,"script":null)
+]
+}
+zoom_in={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":8,"position":Vector2(353, 16),"global_position":Vector2(357, 59),"factor":1.0,"button_index":4,"pressed":true,"double_click":false,"script":null)
+]
+}
+zoom_out={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":16,"position":Vector2(175, 14),"global_position":Vector2(179, 57),"factor":1.0,"button_index":5,"pressed":true,"double_click":false,"script":null)
 ]
 }
 
