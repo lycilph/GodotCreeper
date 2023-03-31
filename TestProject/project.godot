@@ -11,8 +11,14 @@ config_version=5
 [application]
 
 config/name="TestProject"
+run/main_scene="res://FluidSimulation/fluid_simulation_node.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1200
+window/size/viewport_height=820
 
 [rendering]
 
