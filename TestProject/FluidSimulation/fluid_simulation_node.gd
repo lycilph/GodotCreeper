@@ -4,13 +4,14 @@ extends Node2D
 @export var selection : Sprite2D
 
 var grid : Grid
-var boundary = Vector2(10,10)
+var boundary
 var tile
 
 
 func _ready():
 	grid = Grid.new(50,50)
 	renderer.grid = grid
+	boundary = renderer.position
 	tile = renderer.tile_size
 
 
@@ -25,7 +26,16 @@ func _process(_delta):
 		selection.visible = false
 	
 	if (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and selection.visible):
-		grid.set_cell(x,y)
+		var cell = grid.get_cell(x,y)
+		match selection.type:
+			SelectionSprite2D.WATER:
+				cell.type = Cell.TYPE.BLANK
+				cell.fluid = 1.0
+			SelectionSprite2D.SOLID:
+				cell.type = Cell.TYPE.SOLID
+			SelectionSprite2D.EMPTY:
+				cell.type = Cell.TYPE.BLANK
+				cell.fluid = 0.0
 
 
 func _input(event):

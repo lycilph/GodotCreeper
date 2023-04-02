@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://k81h8fq3t1tj"]
+[gd_scene load_steps=7 format=3 uid="uid://k81h8fq3t1tj"]
 
 [ext_resource type="Script" path="res://FluidSimulation/cell_renderer.gd" id="1_qw3td"]
 [ext_resource type="Script" path="res://FluidSimulation/fluid_simulation_node.gd" id="1_yf4e0"]
 [ext_resource type="Texture2D" uid="uid://baonrnhtse6lc" path="res://Assets/tile.png" id="3_jyi2p"]
 [ext_resource type="Texture2D" uid="uid://dq2c35qcpl105" path="res://Assets/arrows.png" id="4_y7dw1"]
 [ext_resource type="Texture2D" uid="uid://s8a2nrbf8ih1" path="res://Assets/settled.png" id="5_x3k3h"]
+[ext_resource type="Script" path="res://FluidSimulation/Selection.gd" id="6_sdk6k"]
 
 [node name="FluidSimulationNode" type="Node2D" node_paths=PackedStringArray("renderer", "selection")]
 script = ExtResource("1_yf4e0")
@@ -24,7 +25,85 @@ tile = ExtResource("3_jyi2p")
 arrows = ExtResource("4_y7dw1")
 settled = ExtResource("5_x3k3h")
 
-[node name="Selection" type="Sprite2D" parent="."]
-modulate = Color(0, 0.541176, 0.054902, 1)
+[node name="Selection" type="Sprite2D" parent="." node_paths=PackedStringArray("renderer", "block", "label")]
 texture = ExtResource("3_jyi2p")
 centered = false
+script = ExtResource("6_sdk6k")
+renderer = NodePath("../CellRenderer")
+block = NodePath("../SimulationUI/MarginContainer/VBoxContainer/SelectedBlock")
+label = NodePath("../SimulationUI/MarginContainer/VBoxContainer/SelectedBlockLabel")
+
+[node name="SimulationUI" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="SimulationUI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -210.0
+offset_bottom = 411.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SimulationUI/MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SelectedBlock" type="ColorRect" parent="SimulationUI/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+color = Color(0, 1, 1, 1)
+
+[node name="SelectedBlockLabel" type="Label" parent="SimulationUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Water"
+
+[node name="SelectWaterButton" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Water (1)"
+icon = ExtResource("3_jyi2p")
+
+[node name="SelectSolidButton" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Solid (2)"
+icon = ExtResource("3_jyi2p")
+
+[node name="SelectEmptyButton" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+text = "Empty (3)"
+icon = ExtResource("3_jyi2p")
+
+[node name="Control" type="Control" parent="SimulationUI/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Button4" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Step"
+
+[node name="Button5" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Run"
+
+[node name="Label2" type="Label" parent="SimulationUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Iteration"
+
+[node name="Control2" type="Control" parent="SimulationUI/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Button6" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save"
+
+[node name="Button7" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Load"
+
+[connection signal="pressed" from="SimulationUI/MarginContainer/VBoxContainer/SelectWaterButton" to="Selection" method="_on_select_water_button_pressed"]
+[connection signal="pressed" from="SimulationUI/MarginContainer/VBoxContainer/SelectSolidButton" to="Selection" method="_on_select_solid_button_pressed"]
+[connection signal="pressed" from="SimulationUI/MarginContainer/VBoxContainer/SelectEmptyButton" to="Selection" method="_on_select_empty_button_pressed"]

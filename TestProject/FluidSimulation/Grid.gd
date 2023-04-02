@@ -13,5 +13,5 @@ func _init(w : int, h : int):
 		cells[i] = Cell.new()
 
 
-func set_cell(x : int, y : int):
-	cells[y*width+x].type = Cell.TYPE.SOLID
+func get_cell(x : int, y : int):
+	return cells[y*width+x]
