@@ -20,6 +20,13 @@ var down : Cell
 var left : Cell
 
 
+func reset():
+	type = TYPE.BLANK
+	fluid = 0.0
+	buffer = 0.0
+	reset_flow()
+
+
 func reset_flow():
 	flow_direction = 0
 

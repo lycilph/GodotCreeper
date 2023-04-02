@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://k81h8fq3t1tj"]
+[gd_scene load_steps=8 format=3 uid="uid://k81h8fq3t1tj"]
 
 [ext_resource type="Script" path="res://FluidSimulation/cell_renderer.gd" id="1_qw3td"]
 [ext_resource type="Script" path="res://FluidSimulation/fluid_simulation_node.gd" id="1_yf4e0"]
@@ -6,17 +6,36 @@
 [ext_resource type="Texture2D" uid="uid://dq2c35qcpl105" path="res://Assets/arrows.png" id="4_y7dw1"]
 [ext_resource type="Texture2D" uid="uid://s8a2nrbf8ih1" path="res://Assets/settled.png" id="5_x3k3h"]
 [ext_resource type="Script" path="res://FluidSimulation/Selection.gd" id="6_sdk6k"]
+[ext_resource type="Texture2D" uid="uid://lk8qb0yiwvp6" path="res://Assets/frame.png" id="7_kwvoi"]
 
-[node name="FluidSimulationNode" type="Node2D" node_paths=PackedStringArray("renderer", "selection")]
+[node name="FluidSimulationNode" type="Node2D" node_paths=PackedStringArray("renderer", "selection", "run_button")]
 script = ExtResource("1_yf4e0")
 renderer = NodePath("CellRenderer")
 selection = NodePath("Selection")
+run_button = NodePath("SimulationUI/VBoxContainer/RunSimulationButton")
 
-[node name="Background" type="ColorRect" parent="."]
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 810.0
-offset_bottom = 810.0
+[node name="BackgroundContainer" type="MarginContainer" parent="."]
+offset_right = 820.0
+offset_bottom = 820.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="BackgroundContainer"]
+layout_mode = 2
+texture = ExtResource("7_kwvoi")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="MarginContainer" type="MarginContainer" parent="BackgroundContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Background" type="ColorRect" parent="BackgroundContainer/MarginContainer"]
+custom_minimum_size = Vector2(800, 800)
+layout_mode = 2
 
 [node name="CellRenderer" type="Node2D" parent="."]
 position = Vector2(10, 10)
@@ -30,80 +49,107 @@ texture = ExtResource("3_jyi2p")
 centered = false
 script = ExtResource("6_sdk6k")
 renderer = NodePath("../CellRenderer")
-block = NodePath("../SimulationUI/MarginContainer/VBoxContainer/SelectedBlock")
-label = NodePath("../SimulationUI/MarginContainer/VBoxContainer/SelectedBlockLabel")
+block = NodePath("../SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SelectedBlock")
+label = NodePath("../SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SelectedBlockLabel")
 
 [node name="SimulationUI" type="CanvasLayer" parent="."]
 
-[node name="MarginContainer" type="MarginContainer" parent="SimulationUI"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SimulationUI"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -210.0
-offset_bottom = 411.0
+offset_left = -200.0
+offset_bottom = 543.0
 grow_horizontal = 0
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SimulationUI/MarginContainer"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="SelectedBlock" type="ColorRect" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="SimulationUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="SimulationUI/VBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("7_kwvoi")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="MarginContainer" type="MarginContainer" parent="SimulationUI/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SimulationUI/VBoxContainer/MarginContainer/MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="SelectedBlock" type="ColorRect" parent="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 color = Color(0, 1, 1, 1)
 
-[node name="SelectedBlockLabel" type="Label" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="SelectedBlockLabel" type="Label" parent="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Water"
 
-[node name="SelectWaterButton" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="SelectWaterButton" type="Button" parent="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Water (1)"
 icon = ExtResource("3_jyi2p")
 
-[node name="SelectSolidButton" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="SelectSolidButton" type="Button" parent="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Solid (2)"
 icon = ExtResource("3_jyi2p")
 
-[node name="SelectEmptyButton" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="SelectEmptyButton" type="Button" parent="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 10
 text = "Empty (3)"
 icon = ExtResource("3_jyi2p")
 
-[node name="Control" type="Control" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="SimulationUI/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="Button4" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="StepSimulationButton" type="Button" parent="SimulationUI/VBoxContainer"]
 layout_mode = 2
 text = "Step"
 
-[node name="Button5" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="RunSimulationButton" type="Button" parent="SimulationUI/VBoxContainer"]
 layout_mode = 2
 text = "Run"
 
-[node name="Label2" type="Label" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="ResetSimulationButton" type="Button" parent="SimulationUI/VBoxContainer"]
+layout_mode = 2
+text = "Reset"
+
+[node name="IterationLabel" type="Label" parent="SimulationUI/VBoxContainer"]
 layout_mode = 2
 text = "Iteration"
 
-[node name="Control2" type="Control" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="Control2" type="Control" parent="SimulationUI/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="Button6" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="Button6" type="Button" parent="SimulationUI/VBoxContainer"]
 layout_mode = 2
 text = "Save"
 
-[node name="Button7" type="Button" parent="SimulationUI/MarginContainer/VBoxContainer"]
+[node name="Button7" type="Button" parent="SimulationUI/VBoxContainer"]
 layout_mode = 2
 text = "Load"
 
-[connection signal="pressed" from="SimulationUI/MarginContainer/VBoxContainer/SelectWaterButton" to="Selection" method="_on_select_water_button_pressed"]
-[connection signal="pressed" from="SimulationUI/MarginContainer/VBoxContainer/SelectSolidButton" to="Selection" method="_on_select_solid_button_pressed"]
-[connection signal="pressed" from="SimulationUI/MarginContainer/VBoxContainer/SelectEmptyButton" to="Selection" method="_on_select_empty_button_pressed"]
+[connection signal="pressed" from="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SelectWaterButton" to="Selection" method="_on_select_water_button_pressed"]
+[connection signal="pressed" from="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SelectSolidButton" to="Selection" method="_on_select_solid_button_pressed"]
+[connection signal="pressed" from="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SelectEmptyButton" to="Selection" method="_on_select_empty_button_pressed"]
+[connection signal="pressed" from="SimulationUI/VBoxContainer/StepSimulationButton" to="." method="_on_step_simulation_button_pressed"]
+[connection signal="pressed" from="SimulationUI/VBoxContainer/RunSimulationButton" to="." method="_on_run_simulation_button_pressed"]
+[connection signal="pressed" from="SimulationUI/VBoxContainer/ResetSimulationButton" to="." method="_on_reset_simulation_button_pressed"]

@@ -21,8 +21,9 @@ gdscript/warnings/integer_division=0
 
 [display]
 
-window/size/viewport_width=1030
+window/size/viewport_width=1040
 window/size/viewport_height=820
+window/size/resizable=false
 
 [input]
 
