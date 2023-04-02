@@ -22,7 +22,7 @@ func _init(g : Grid):
 func step():
 	grid.reset_buffer()
 
-#	#var starting_value
+	var starting_value
 	var remaining_value
 	var flow
 	var cell
@@ -30,6 +30,7 @@ func step():
 	for y in range(grid.height-1,-1,-1):
 		for x in grid.width:
 			cell = grid.get_cell(x,y)
+			cell.reset_flow()
 
 			if (cell.type == Cell.TYPE.SOLID):
 				continue
@@ -39,7 +40,7 @@ func step():
 				cell.fluid = 0.0
 				continue
 
-#			starting_value = cell.liquid
+			starting_value = cell.fluid
 			remaining_value = cell.fluid
 			flow = 0.0
 
@@ -55,6 +56,7 @@ func step():
 					remaining_value -= flow
 					cell.buffer -= flow
 					cell.down.buffer += flow
+					cell.add_flow(Cell.DOWN)
 
 			if (remaining_value < MIN_VALUE):
 				cell.buffer -= remaining_value
@@ -72,6 +74,7 @@ func step():
 					remaining_value -= flow
 					cell.buffer -= flow
 					cell.left.buffer += flow
+					cell.add_flow(Cell.LEFT)
 
 			if (remaining_value < MIN_VALUE):
 				cell.buffer -= remaining_value
@@ -89,6 +92,7 @@ func step():
 					remaining_value -= flow
 					cell.buffer -= flow
 					cell.right.buffer += flow
+					cell.add_flow(Cell.RIGHT)
 
 			if (remaining_value < MIN_VALUE):
 				cell.buffer -= remaining_value
@@ -106,10 +110,19 @@ func step():
 					remaining_value -= flow
 					cell.buffer -= flow
 					cell.up.buffer += flow
+					cell.add_flow(Cell.UP)
 
 			if (remaining_value < MIN_VALUE):
 				cell.buffer -= remaining_value
 				continue
+			
+			if (starting_value == remaining_value):
+				cell.settle_count += 1
+				if (cell.settle_count >= 10):
+					cell.reset_flow()
+					cell.settled = true
+			else:
+				cell.unsettle_neighbors()
 	
 	grid.update(MIN_VALUE)
 

@@ -27,6 +27,21 @@ func reset():
 	reset_flow()
 
 
+func unsettle_neighbors():
+	if (up != null):
+		up.settled = false
+		up.settle_count = 0
+	if (right != null):
+		right.settled = false
+		right.settle_count = 0
+	if (down != null):
+		down.settled = false
+		down.settle_count = 0
+	if (left != null):
+		left.settled = false
+		left.settle_count = 0
+
+
 func reset_flow():
 	flow_direction = 0
 
