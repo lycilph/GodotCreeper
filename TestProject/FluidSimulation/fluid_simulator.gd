@@ -34,6 +34,8 @@ func step():
 
 			if (cell.type == Cell.TYPE.SOLID):
 				continue
+			if (cell.settled):
+				continue
 			if (cell.fluid == 0.0):
 				continue
 			if (cell.fluid < MIN_VALUE):

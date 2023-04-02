@@ -24,6 +24,8 @@ func reset():
 	type = TYPE.BLANK
 	fluid = 0.0
 	buffer = 0.0
+	settled = false
+	settle_count = 0
 	reset_flow()
 
 

@@ -80,13 +80,13 @@ patch_margin_bottom = 10
 
 [node name="MarginContainer" type="MarginContainer" parent="SimulationUI/VBoxContainer/MarginContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SimulationUI/VBoxContainer/MarginContainer/MarginContainer"]
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 
 [node name="SelectedBlock" type="ColorRect" parent="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
@@ -134,18 +134,6 @@ text = "Reset"
 [node name="IterationLabel" type="Label" parent="SimulationUI/VBoxContainer"]
 layout_mode = 2
 text = "Iteration"
-
-[node name="Control2" type="Control" parent="SimulationUI/VBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="Button6" type="Button" parent="SimulationUI/VBoxContainer"]
-layout_mode = 2
-text = "Save"
-
-[node name="Button7" type="Button" parent="SimulationUI/VBoxContainer"]
-layout_mode = 2
-text = "Load"
 
 [connection signal="pressed" from="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SelectWaterButton" to="Selection" method="_on_select_water_button_pressed"]
 [connection signal="pressed" from="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SelectSolidButton" to="Selection" method="_on_select_solid_button_pressed"]

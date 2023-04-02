@@ -9,7 +9,7 @@ fractal_gain = 0.4
 fractal_weighted_strength = 0.76
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_umev7"]
-width = 60
+width = 50
 height = 50
 noise = SubResource("FastNoiseLite_khagg")
 
@@ -21,10 +21,10 @@ rect = NodePath("TextureRect")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 35.0
-offset_top = 27.0
-offset_right = 756.0
-offset_bottom = 522.0
+offset_left = 39.0
+offset_top = 30.0
+offset_right = 693.0
+offset_bottom = 596.0
 texture = SubResource("NoiseTexture2D_umev7")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
