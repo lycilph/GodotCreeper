@@ -75,3 +75,10 @@ func update(min_value : float):
 
 func get_cell(x : int, y : int):
 	return cells[y*width+x]
+
+
+func get_total_fluid():
+	var total_fluid = 0.0
+	for c in cells:
+		total_fluid += c.fluid
+	return total_fluid

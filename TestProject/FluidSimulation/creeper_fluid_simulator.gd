@@ -27,8 +27,11 @@ func step() -> int:
 				continue
 			if (cell.fluid == 0.0):
 				continue
+			if (cell.settled):
+				continue
 
 			cells_updated += 1
+			var starting = cell.fluid
 			var remaining = cell.fluid
 
 			# Flow down
@@ -36,12 +39,13 @@ func step() -> int:
 				flow = 1.0 - cell.down.fluid
 				flow = minf(flow,cell.fluid)
 				flow = snappedf(flow, FLUID_STEP)
-				
+
 				if (flow > 0):
 					remaining -= flow
 					cell.buffer -= flow
 					cell.down.buffer += flow
 					cell.add_flow(Cell.DOWN)
+					cell.unsettle_neighbors()
 
 			if (remaining < MIN_VALUE):
 				cell.buffer -= remaining
@@ -59,6 +63,7 @@ func step() -> int:
 					horizontal_flow -= flow
 					cell.buffer -= flow
 					cell.left.buffer += flow
+					cell.left.settled = false
 					cell.add_flow(Cell.LEFT)
 
 			# Flow right
@@ -71,6 +76,7 @@ func step() -> int:
 					horizontal_flow -= flow
 					cell.buffer -= flow
 					cell.right.buffer += flow
+					cell.right.settled = false
 					cell.add_flow(Cell.RIGHT)
 
 			remaining += horizontal_flow
@@ -83,16 +89,25 @@ func step() -> int:
 				flow = (remaining - 1)
 				flow = maxf(0, flow)
 				flow = snappedf(flow, FLUID_STEP)
-				
+
 				if (flow > 0):
 					remaining -= flow
 					cell.buffer -= flow
 					cell.up.buffer += flow
+					cell.up.settled = false
 					cell.add_flow(Cell.UP)
 
 			if (remaining < MIN_VALUE):
 				cell.buffer -= remaining
 				continue
+
+			if (starting == remaining):
+				cell.settle_count += 1
+				if (cell.settle_count >= 10):
+					cell.reset_flow()
+					cell.settled = true
+			else:
+				cell.unsettle_neighbors()
 
 	grid.update(0)
 	

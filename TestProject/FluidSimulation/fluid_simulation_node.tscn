@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://FluidSimulation/Selection.gd" id="6_sdk6k"]
 [ext_resource type="Texture2D" uid="uid://lk8qb0yiwvp6" path="res://Assets/frame.png" id="7_kwvoi"]
 
-[node name="FluidSimulationNode" type="Node2D" node_paths=PackedStringArray("renderer", "selection", "run_button", "iteration_label", "zoom_label", "cells_updated_label", "camera")]
+[node name="FluidSimulationNode" type="Node2D" node_paths=PackedStringArray("renderer", "selection", "run_button", "iteration_label", "zoom_label", "cells_updated_label", "total_fluid_label", "camera")]
 script = ExtResource("1_yf4e0")
 renderer = NodePath("CellRenderer")
 selection = NodePath("Selection")
@@ -16,6 +16,7 @@ run_button = NodePath("SimulationUI/VBoxContainer/RunSimulationButton")
 iteration_label = NodePath("SimulationUI/VBoxContainer/HBoxContainer/IterationLabel")
 zoom_label = NodePath("SimulationUI/VBoxContainer/HBoxContainer2/ZoomLabel")
 cells_updated_label = NodePath("SimulationUI/VBoxContainer/HBoxContainer3/CellsUpdatedLabel")
+total_fluid_label = NodePath("SimulationUI/VBoxContainer/HBoxContainer4/TotalFluidLabel")
 camera = NodePath("Camera2D")
 
 [node name="BackgroundContainer" type="MarginContainer" parent="."]
@@ -179,6 +180,17 @@ text = "Cells updated"
 [node name="CellsUpdatedLabel" type="Label" parent="SimulationUI/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 text = "0"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="SimulationUI/VBoxContainer"]
+layout_mode = 2
+
+[node name="TotalFluidTextLabel" type="Label" parent="SimulationUI/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Total fluid"
+
+[node name="TotalFluidLabel" type="Label" parent="SimulationUI/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "0.0"
 
 [node name="Control2" type="Control" parent="SimulationUI/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)

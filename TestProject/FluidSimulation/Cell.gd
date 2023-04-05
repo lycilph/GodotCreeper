@@ -58,3 +58,17 @@ func add_flow(direction):
 			flow_direction += 4
 		LEFT:
 			flow_direction += 8
+
+
+func add_fluid(value : float):
+	fluid += value
+	settled = false
+	settle_count = 0
+	unsettle_neighbors()
+
+
+func set_fluid(value : float):
+	fluid = value
+	settled = false
+	settle_count = 0
+	unsettle_neighbors()

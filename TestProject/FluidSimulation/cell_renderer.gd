@@ -69,13 +69,13 @@ func _draw():
 		y = i / grid.width
 		draw_texture_rect_region(arrows, Rect2(x*tile_size,y*tile_size,tile_size,tile_size), Rect2(flow_x*tile_size,flow_y*tile_size,tile_size,tile_size))
 	
-#	for i in grid.cells.size():
-#		cell = grid.cells[i]
-#		if (cell.fluid > 0.0 and cell.settled):
-#			x = i % grid.width
-#			y = i / grid.width
-#			pos = Vector2(x*tile_size, y*tile_size)
-#			draw_texture(settled, pos)
+	for i in grid.cells.size():
+		cell = grid.cells[i]
+		if (cell.fluid > 0.0 and cell.settled):
+			x = i % grid.width
+			y = i / grid.width
+			pos = Vector2(x*tile_size, y*tile_size)
+			draw_texture(settled, pos)
 
 	if (zoom_level > 1.5):
 		for i in grid.cells.size():

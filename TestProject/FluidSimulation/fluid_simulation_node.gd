@@ -6,6 +6,7 @@ extends Node2D
 @export var iteration_label : Label
 @export var zoom_label : Label
 @export var cells_updated_label : Label
+@export var total_fluid_label : Label
 @export var camera : Camera2D
 
 var grid : Grid
@@ -41,23 +42,23 @@ func _process(_delta):
 		match selection.type:
 			SelectionSprite2D.WATER:
 				cell.type = Cell.TYPE.BLANK
-				cell.fluid = 1
+				cell.set_fluid(1)
 			SelectionSprite2D.SOLID:
 				cell.type = Cell.TYPE.SOLID
+				cell.unsettle_neighbors()
 			SelectionSprite2D.EMPTY:
 				cell.type = Cell.TYPE.BLANK
-				cell.fluid = 0.0
-		cell.unsettle_neighbors()
+				cell.set_fluid(0)
 	if (Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) and selection.visible):
 		var cell = grid.get_cell(x,y)
-		cell.fluid += 1
-		cell.unsettle_neighbors()
+		cell.add_fluid(1)
 
 	if (running):
 		step_simulation()
 	
 	iteration_label.text = str(simulator.iteration)
 	zoom_label.text = "%.2f" % camera.zoom.x
+	total_fluid_label.text = "%.2f" % grid.get_total_fluid()
 	renderer.zoom_level = camera.zoom.x
 
 
