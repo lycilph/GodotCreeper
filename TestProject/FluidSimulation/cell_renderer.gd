@@ -12,6 +12,7 @@ const EMPTY : Color = Color.LIGHT_GRAY
 
 var grid : Grid
 var tile_size : int
+var zoom_level : float
 
 
 func _ready():
@@ -70,16 +71,17 @@ func _draw():
 	
 	for i in grid.cells.size():
 		cell = grid.cells[i]
-		if (cell.settled):
+		if (cell.fluid > 0.0 and cell.settled):
 			x = i % grid.width
 			y = i / grid.width
 			pos = Vector2(x*tile_size, y*tile_size)
 			draw_texture(settled, pos)
 
-#	for i in grid.cells.size():
-#		cell = grid.cells[i]
-#		if (cell.fluid > 0):
-#			x = i % grid.width
-#			y = i / grid.width
-#			pos = Vector2(x*tile_size, (y+1)*tile_size)
-#			draw_string(font, pos, str(cell.fluid),HORIZONTAL_ALIGNMENT_CENTER,tile_size,16,Color.BLACK)
+	if (zoom_level > 1.5):
+		for i in grid.cells.size():
+			cell = grid.cells[i]
+			if (cell.fluid > 0):
+				x = i % grid.width
+				y = i / grid.width
+				pos = Vector2(x*tile_size, (y+1)*tile_size)
+				draw_string(font,pos,str(cell.fluid),HORIZONTAL_ALIGNMENT_CENTER,tile_size,8,Color.GREEN)

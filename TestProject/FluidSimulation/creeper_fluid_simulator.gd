@@ -10,12 +10,13 @@ func _init(g : Grid):
 	grid = g
 
 
-func step():
+func step() -> int:
 	grid.reset_buffer()
 	iteration += 1
 	
 	var cell
 	var flow
+	var cells_updated = 0
 	for y in range(grid.height-1,-1,-1):
 		for x in grid.width:
 			cell = grid.get_cell(x,y)
@@ -25,6 +26,10 @@ func step():
 				continue
 			if (cell.fluid == 0.0):
 				continue
+#			if (cell.settled):
+#				continue
+
+			cells_updated += 1
 
 			# Flow up
 			if (cell.up != null and cell.up.type == Cell.TYPE.BLANK):
@@ -82,5 +87,15 @@ func step():
 					cell.buffer -= flow
 					cell.right.buffer += flow
 					cell.add_flow(Cell.RIGHT)
+			
+			# Settle/unsettle cell
+			if (cell.buffer == 0):
+				cell.settle_count += 1
+				if (cell.settle_count >= 10):
+					cell.settled = true
+			else:
+				cell.unsettle_neighbors()
 
 	grid.update(0)
+	
+	return cells_updated
