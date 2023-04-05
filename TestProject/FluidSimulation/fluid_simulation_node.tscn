@@ -8,11 +8,12 @@
 [ext_resource type="Script" path="res://FluidSimulation/Selection.gd" id="6_sdk6k"]
 [ext_resource type="Texture2D" uid="uid://lk8qb0yiwvp6" path="res://Assets/frame.png" id="7_kwvoi"]
 
-[node name="FluidSimulationNode" type="Node2D" node_paths=PackedStringArray("renderer", "selection", "run_button")]
+[node name="FluidSimulationNode" type="Node2D" node_paths=PackedStringArray("renderer", "selection", "run_button", "iteration_label")]
 script = ExtResource("1_yf4e0")
 renderer = NodePath("CellRenderer")
 selection = NodePath("Selection")
 run_button = NodePath("SimulationUI/VBoxContainer/RunSimulationButton")
+iteration_label = NodePath("SimulationUI/VBoxContainer/HBoxContainer/IterationLabel")
 
 [node name="BackgroundContainer" type="MarginContainer" parent="."]
 offset_right = 820.0
@@ -131,9 +132,17 @@ text = "Run"
 layout_mode = 2
 text = "Reset"
 
-[node name="IterationLabel" type="Label" parent="SimulationUI/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SimulationUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="IterationTextLabel" type="Label" parent="SimulationUI/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Iteration"
+
+[node name="IterationLabel" type="Label" parent="SimulationUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "111"
 
 [connection signal="pressed" from="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SelectWaterButton" to="Selection" method="_on_select_water_button_pressed"]
 [connection signal="pressed" from="SimulationUI/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/SelectSolidButton" to="Selection" method="_on_select_solid_button_pressed"]

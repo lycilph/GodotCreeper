@@ -3,9 +3,10 @@ extends Node2D
 @export var renderer : CellRenderer
 @export var selection : Sprite2D
 @export var run_button : Button
+@export var iteration_label : Label
 
 var grid : Grid
-var simulator : FluidSimulator
+var simulator : CreeperFluidSimulator
 var boundary
 var tile
 var running
@@ -13,7 +14,7 @@ var running
 
 func _ready():
 	grid = Grid.new(50,50)
-	simulator = FluidSimulator.new(grid)
+	simulator = CreeperFluidSimulator.new(grid)
 	renderer.grid = grid
 	boundary = renderer.position
 	tile = renderer.tile_size
@@ -34,7 +35,7 @@ func _process(_delta):
 		match selection.type:
 			SelectionSprite2D.WATER:
 				cell.type = Cell.TYPE.BLANK
-				cell.fluid = 1.0
+				cell.fluid += 0.1
 			SelectionSprite2D.SOLID:
 				cell.type = Cell.TYPE.SOLID
 			SelectionSprite2D.EMPTY:
@@ -43,6 +44,7 @@ func _process(_delta):
 	
 	if (running):
 		simulator.step()
+	iteration_label.text = str(simulator.iteration)
 
 
 func _input(event):
@@ -64,3 +66,4 @@ func _on_run_simulation_button_pressed():
 
 func _on_reset_simulation_button_pressed():
 	grid.reset()
+	simulator.iteration = 0

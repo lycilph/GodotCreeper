@@ -8,6 +8,7 @@ const EMPTY : Color = Color.LIGHT_GRAY
 @export var tile : Texture
 @export var arrows : Texture
 @export var settled : Texture
+@export var font : FontFile
 
 var grid : Grid
 var tile_size : int
@@ -15,6 +16,7 @@ var tile_size : int
 
 func _ready():
 	tile_size = tile.get_width()
+	font = load("res://Assets/Roboto-Regular.ttf")
 
 
 func _process(_delta):
@@ -41,16 +43,18 @@ func _draw():
 			if (cell.down != null and cell.down.type == Cell.TYPE.BLANK and cell.down.fluid <= 0.99):
 				size = 0
 
+			# Render flowing cells as full
 			if (cell.type == Cell.TYPE.BLANK and cell.up != null and cell.up.fluid > 0.05):
 				size = tile_size
 			else:
 				size = minf(1, cell.fluid)*tile_size
-				
+			
+			# Render cells with > 1 as darker
 			if (cell.fluid > 1.0):
 				col = WATER.lerp(DARK_WATER, (cell.fluid-1)/2.0)
 			else:
 				col = WATER
-				
+
 			draw_texture_rect(tile, Rect2(pos.x, (tile_size-size)+pos.y, tile_size, size), false, col)
 		
 	# Add flow
@@ -71,3 +75,11 @@ func _draw():
 			y = i / grid.width
 			pos = Vector2(x*tile_size, y*tile_size)
 			draw_texture(settled, pos)
+
+#	for i in grid.cells.size():
+#		cell = grid.cells[i]
+#		if (cell.fluid > 0):
+#			x = i % grid.width
+#			y = i / grid.width
+#			pos = Vector2(x*tile_size, (y+1)*tile_size)
+#			draw_string(font, pos, str(cell.fluid),HORIZONTAL_ALIGNMENT_CENTER,tile_size,16,Color.BLACK)

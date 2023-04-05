@@ -53,7 +53,7 @@ func set_neighbors():
 	get_cell(0,height-1).right = get_cell(1,height-1)
 	# Bottom-right
 	get_cell(width-1,height-1).up = get_cell(width-1,height-2)
-	get_cell(width-1,height-1).left = get_cell(width-2,height-2)
+	get_cell(width-1,height-1).left = get_cell(width-2,height-1)
 
 
 func reset():

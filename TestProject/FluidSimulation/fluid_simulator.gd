@@ -13,6 +13,7 @@ const FLOW_SPEED : float = 1;
 
 
 var grid : Grid
+var iteration : int
 
 
 func _init(g : Grid):
@@ -21,6 +22,7 @@ func _init(g : Grid):
 
 func step():
 	grid.reset_buffer()
+	iteration += 1
 
 	var starting_value
 	var remaining_value
