@@ -13,6 +13,7 @@ var simulator : CreeperFluidSimulator
 var boundary
 var tile
 var running
+var original_camera_position
 
 
 func _ready():
@@ -21,6 +22,8 @@ func _ready():
 	renderer.grid = grid
 	boundary = renderer.position
 	tile = renderer.tile_size
+	original_camera_position = camera.position
+	start_stop_simulation()
 
 
 func _process(_delta):
@@ -38,12 +41,16 @@ func _process(_delta):
 		match selection.type:
 			SelectionSprite2D.WATER:
 				cell.type = Cell.TYPE.BLANK
-				cell.fluid += 0.1
+				cell.fluid = 1
 			SelectionSprite2D.SOLID:
 				cell.type = Cell.TYPE.SOLID
 			SelectionSprite2D.EMPTY:
 				cell.type = Cell.TYPE.BLANK
 				cell.fluid = 0.0
+		cell.unsettle_neighbors()
+	if (Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) and selection.visible):
+		var cell = grid.get_cell(x,y)
+		cell.fluid += 1
 		cell.unsettle_neighbors()
 
 	if (running):
@@ -58,11 +65,7 @@ func _unhandled_input(event):
 	if (event.is_action_pressed("ui_cancel")):
 		get_tree().quit()
 	if (event.is_action_pressed("run_simulation")):
-		running = !running
-		if (running):
-			run_button.text = "Stop"
-		else:
-			run_button.text = "Run"
+		start_stop_simulation()
 	if (event.is_action_pressed("step_simulation")):
 		step_simulation()
 	if (event.is_action_pressed("zoom_in")):
@@ -72,13 +75,13 @@ func _unhandled_input(event):
 		camera.zoom.x *= 0.9
 		camera.zoom.y *= 0.9
 	if (event.is_action("ui_up")):
-		camera.position.y -= 10
+		camera.position.y -= 20
 	if (event.is_action("ui_down")):
-		camera.position.y += 10		
+		camera.position.y += 20
 	if (event.is_action("ui_left")):
-		camera.position.x -= 10		
+		camera.position.x -= 20
 	if (event.is_action("ui_right")):
-		camera.position.x += 10
+		camera.position.x += 20
 
 
 func step_simulation():
@@ -86,11 +89,7 @@ func step_simulation():
 	cells_updated_label.text = str(cells_update)
 
 
-func _on_step_simulation_button_pressed():
-	step_simulation()
-
-
-func _on_run_simulation_button_pressed():
+func start_stop_simulation():
 	running = !running
 	if (running):
 		run_button.text = "Stop"
@@ -98,6 +97,19 @@ func _on_run_simulation_button_pressed():
 		run_button.text = "Run"
 
 
+func _on_step_simulation_button_pressed():
+	step_simulation()
+
+
+func _on_run_simulation_button_pressed():
+	start_stop_simulation()
+
+
 func _on_reset_simulation_button_pressed():
 	grid.reset()
 	simulator.iteration = 0
+
+
+func _on_reset_camera_button_pressed():
+	camera.position = original_camera_position
+	camera.zoom = Vector2(1,1)

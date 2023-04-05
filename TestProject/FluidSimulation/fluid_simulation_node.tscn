@@ -58,6 +58,17 @@ label = NodePath("../SimulationUI/VBoxContainer/MarginContainer/MarginContainer/
 
 [node name="SimulationUI" type="CanvasLayer" parent="."]
 
+[node name="ColorRect" type="ColorRect" parent="SimulationUI"]
+custom_minimum_size = Vector2(220, 820)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0.25098, 0.25098, 0.25098, 1)
+
 [node name="VBoxContainer" type="VBoxContainer" parent="SimulationUI"]
 anchors_preset = 1
 anchor_left = 1.0
@@ -169,6 +180,14 @@ text = "Cells updated"
 layout_mode = 2
 text = "0"
 
+[node name="Control2" type="Control" parent="SimulationUI/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="ResetCameraButton" type="Button" parent="SimulationUI/VBoxContainer"]
+layout_mode = 2
+text = "Reset Camera"
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(520, 410)
 
@@ -178,3 +197,4 @@ position = Vector2(520, 410)
 [connection signal="pressed" from="SimulationUI/VBoxContainer/StepSimulationButton" to="." method="_on_step_simulation_button_pressed"]
 [connection signal="pressed" from="SimulationUI/VBoxContainer/RunSimulationButton" to="." method="_on_run_simulation_button_pressed"]
 [connection signal="pressed" from="SimulationUI/VBoxContainer/ResetSimulationButton" to="." method="_on_reset_simulation_button_pressed"]
+[connection signal="pressed" from="SimulationUI/VBoxContainer/ResetCameraButton" to="." method="_on_reset_camera_button_pressed"]
