@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2vq1ippgu2me"]
+
+[ext_resource type="Script" path="res://BulletTest/bullet_test.gd" id="1_6uoa2"]
+[ext_resource type="PackedScene" uid="uid://b0tmktjo1pash" path="res://BulletTest/shooter.tscn" id="2_t13hb"]
+
+[node name="BulletTest" type="Node2D" node_paths=PackedStringArray("shooter", "timer")]
+script = ExtResource("1_6uoa2")
+shooter = NodePath("Shooter")
+timer = NodePath("Timer")
+
+[node name="Shooter" parent="." instance=ExtResource("2_t13hb")]
+rotation = 1.9984
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true

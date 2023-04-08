@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0tmktjo1pash"]
+
+[ext_resource type="Script" path="res://BulletTest/shooter.gd" id="1_ffh1o"]
+[ext_resource type="Texture2D" uid="uid://dr3npgxfgj5wi" path="res://Assets/weapons.png" id="1_vb32p"]
+
+[node name="Shooter" type="Node2D" node_paths=PackedStringArray("marker")]
+script = ExtResource("1_ffh1o")
+marker = NodePath("Marker2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("1_vb32p")
+hframes = 4
+vframes = 4
+frame = 4
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(45, 0)
