@@ -1,0 +1,133 @@
+[gd_scene load_steps=4 format=3 uid="uid://dkttbxloioha7"]
+
+[ext_resource type="Script" path="res://LandscapeGenerator/landscape_generator.gd" id="1_vnsg7"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jsc54"]
+frequency = 0.03
+domain_warp_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wh02r"]
+width = 50
+height = 50
+noise = SubResource("FastNoiseLite_jsc54")
+
+[node name="LandscapeGenerator" type="Node2D" node_paths=PackedStringArray("rect", "width_slider", "height_slider", "levels_slider", "width_label", "height_label", "levels_label")]
+script = ExtResource("1_vnsg7")
+rect = NodePath("TextureRect")
+width_slider = NodePath("VBoxContainer/HBoxContainer/WidthSlider")
+height_slider = NodePath("VBoxContainer/HBoxContainer2/HeightSlider")
+levels_slider = NodePath("VBoxContainer/HBoxContainer3/LevelsSlider")
+width_label = NodePath("VBoxContainer/HBoxContainer/WidthLabel")
+height_label = NodePath("VBoxContainer/HBoxContainer2/HeightLabel")
+levels_label = NodePath("VBoxContainer/HBoxContainer3/LevelsLabel")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 550.0
+offset_bottom = 550.0
+texture = SubResource("NoiseTexture2D_wh02r")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 25.0
+offset_top = 575.0
+offset_right = 112.0
+offset_bottom = 661.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "Width
+"
+
+[node name="WidthSlider" type="HSlider" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 10.0
+value = 10.0
+
+[node name="WidthLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "123"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "Height
+"
+
+[node name="HeightSlider" type="HSlider" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 10.0
+value = 10.0
+
+[node name="HeightLabel" type="Label" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "123
+"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "Levels"
+
+[node name="LevelsSlider" type="HSlider" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+
+[node name="LevelsLabel" type="Label" parent="VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "123"
+
+[node name="GenerateButton" type="Button" parent="."]
+offset_left = 575.0
+offset_top = 25.0
+offset_right = 655.0
+offset_bottom = 56.0
+text = "Generate"
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_top = 740.0
+offset_right = 1040.0
+offset_bottom = 821.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/separation = 20
+
+[node name="PreviousButton" type="Button" parent="CenterContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = "<"
+
+[node name="NextButton" type="Button" parent="CenterContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = ">"
+
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/WidthSlider" to="." method="_on_width_slider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer2/HeightSlider" to="." method="_on_height_slider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer3/LevelsSlider" to="." method="_on_levels_slider_value_changed"]
+[connection signal="pressed" from="GenerateButton" to="." method="_on_generate_button_pressed"]

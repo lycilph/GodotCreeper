@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="TestProject"
-run/main_scene="res://BulletTest/bullet_test.tscn"
+run/main_scene="res://LandscapeGenerator/landscape_generator.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
 config/icon="res://icon.svg"
 
