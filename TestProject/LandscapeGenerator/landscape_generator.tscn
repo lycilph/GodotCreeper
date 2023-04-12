@@ -48,7 +48,7 @@ custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-min_value = 10.0
+min_value = 5.0
 value = 10.0
 
 [node name="WidthLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
@@ -69,7 +69,7 @@ text = "Height
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-min_value = 10.0
+min_value = 5.0
 value = 10.0
 
 [node name="HeightLabel" type="Label" parent="VBoxContainer/HBoxContainer2"]
@@ -105,27 +105,6 @@ offset_top = 25.0
 offset_right = 655.0
 offset_bottom = 56.0
 text = "Generate"
-
-[node name="CenterContainer" type="CenterContainer" parent="."]
-offset_top = 740.0
-offset_right = 1040.0
-offset_bottom = 821.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-theme_override_constants/separation = 20
-
-[node name="PreviousButton" type="Button" parent="CenterContainer/HBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-text = "<"
-
-[node name="NextButton" type="Button" parent="CenterContainer/HBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-text = ">"
 
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer/WidthSlider" to="." method="_on_width_slider_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer2/HeightSlider" to="." method="_on_height_slider_value_changed"]

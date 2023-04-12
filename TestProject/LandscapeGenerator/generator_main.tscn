@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://2cs6x5w8a7u1"]
+
+[ext_resource type="Script" path="res://LandscapeGenerator/generator_main.gd" id="1_0gmxe"]
+[ext_resource type="PackedScene" uid="uid://dkttbxloioha7" path="res://LandscapeGenerator/landscape_generator.tscn" id="1_b0sn8"]
+[ext_resource type="PackedScene" uid="uid://cybt2tm6kb770" path="res://LandscapeGenerator/marching_square.tscn" id="2_3xfvv"]
+
+[node name="GeneratorMain" type="Node2D" node_paths=PackedStringArray("landscape_generator", "marching_square", "prev_button", "next_button")]
+script = ExtResource("1_0gmxe")
+landscape_generator = NodePath("LandscapeGenerator")
+marching_square = NodePath("MarchingSquare")
+prev_button = NodePath("CenterContainer/HBoxContainer/PreviousButton")
+next_button = NodePath("CenterContainer/HBoxContainer/NextButton")
+
+[node name="LandscapeGenerator" parent="." instance=ExtResource("1_b0sn8")]
+
+[node name="MarchingSquare" parent="." instance=ExtResource("2_3xfvv")]
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_top = 740.0
+offset_right = 1040.0
+offset_bottom = 821.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/separation = 20
+
+[node name="PreviousButton" type="Button" parent="CenterContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = "<"
+
+[node name="NextButton" type="Button" parent="CenterContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = ">"
+
+[connection signal="pressed" from="CenterContainer/HBoxContainer/PreviousButton" to="." method="_on_previous_button_pressed"]
+[connection signal="pressed" from="CenterContainer/HBoxContainer/NextButton" to="." method="_on_next_button_pressed"]
